@@ -7,7 +7,7 @@ describe("API - User Book Flow", () => {
         // Passo 1 - Criar Usuário
         cy.request({
             method: "POST",
-            url: "https://demoqa.com/Account/v1/User",
+            url: "/Account/v1/User",
             body: { userName, password },
         })
             .then((createRes) => {
@@ -19,7 +19,7 @@ describe("API - User Book Flow", () => {
                 // Passo 2 - Gerar Token
                 return cy.request({
                     method: "POST",
-                    url: "https://demoqa.com/Account/v1/GenerateToken",
+                    url: "/Account/v1/GenerateToken",
                     body: { userName, password },
                 });
             })
@@ -31,7 +31,7 @@ describe("API - User Book Flow", () => {
                 // Passo 3 - Confirmar Autorização
                 return cy.request({
                     method: "POST",
-                    url: "https://demoqa.com/Account/v1/Authorized",
+                    url: "/Account/v1/Authorized",
                     body: { userName, password },
                 });
             })
@@ -42,7 +42,7 @@ describe("API - User Book Flow", () => {
                 // Passo 4 - Listar Livros
                 return cy.request({
                     method: "GET",
-                    url: "https://demoqa.com/BookStore/v1/Books",
+                    url: "/BookStore/v1/Books",
                 });
             })
             .then((booksRes) => {
@@ -61,7 +61,7 @@ describe("API - User Book Flow", () => {
                 // Passo 5 - Alugar Livros
                 return cy.request({
                     method: "POST",
-                    url: "https://demoqa.com/BookStore/v1/Books",
+                    url: "/BookStore/v1/Books",
                     headers: {
                         Authorization: `Bearer ${Cypress.env("token")}`,
                         "Content-Type": "application/json",
@@ -76,14 +76,10 @@ describe("API - User Book Flow", () => {
                 expect([200, 201]).to.include(rentRes.status);
                 const [isbn1, isbn2] = Cypress.env("bookIsbns");
 
-                console.log(
-                    "Buscando detalhes do usuário com os livros alugados..."
-                );
-
                 // Passo 6 - Buscar Detalhes do Usuário
                 return cy.request({
                     method: "GET",
-                    url: `https://demoqa.com/Account/v1/User/${Cypress.env(
+                    url: `/Account/v1/User/${Cypress.env(
                         "userId"
                     )}`,
                     headers: {
