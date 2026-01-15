@@ -1,3 +1,5 @@
+import practiceFormPage from "../../support/pages/practice-form.page";
+
 describe("Forms - Practice Form", () => {
 
     beforeEach(() => {
@@ -19,82 +21,32 @@ describe("Forms - Practice Form", () => {
         const mobileNumber = Math.floor(
             1000000000 + Math.random() * 9000000000
         ).toString();
-        const address = `Rua Cypress QA, ${Math.floor(Math.random() * 1000)}`;
+        const address = `Rua Cypress QA, ${Math.floor(Math.random() * 100)}`;
 
 
-        // Passo 1 - Acessar o site
-        cy.visit("/");
-
-        // Passo 2 - Acessar Forms
-        cy.contains(".card-body", "Forms").click();
-        cy.url().should("include", "/forms");
-
-        // Passo 3 - Acessar Practice Form
-        cy.contains("li", "Practice Form").click();
-        cy.contains("Student Registration Form").should("be.visible");
+        // Passo 1 a 3 - Acessar o site e navegar até o formulário
+        practiceFormPage.visit();
 
         // Passo 4 - Preencher o formulário
-        cy.get("#firstName")
-            .should("be.visible")
-            .type(firstName);
+        practiceFormPage.fillName(firstName, lastName);
+        practiceFormPage.fillEmail(email);
+        practiceFormPage.selectGender('Female');
+        practiceFormPage.fillMobileNumber(mobileNumber);
 
-        cy.get("#lastName")
-            .should("be.visible")
-            .type(lastName);
-
-        cy.get("#userEmail")
-            .should("be.visible")
-            .type(email);
-
-        cy.get("#gender-radio-2").check({ force: true });
-
-        cy.get("#userNumber")
-            .should("be.visible")
-            .type(mobileNumber);
-
-
-        cy.get('#dateOfBirthInput')
-            .should('be.visible')
-            .click();
-
-        cy.get('.react-datepicker__month-select')
-            .select('January');
-
-        cy.get('.react-datepicker__year-select')
-            .select('1996');
-
-        cy.get('.react-datepicker__day--014')
-            .not('.react-datepicker__day--outside-month')
-            .click();
-
-        cy.get('#subjectsInput')
-            .should('be.visible')
-            .type('Maths{enter}');
-
-        cy.get('#hobbies-checkbox-1').check({ force: true });
+        practiceFormPage.setDateOfBirth('14', 'January', '1996');
+        practiceFormPage.fillSubjects('Maths');
+        practiceFormPage.selectHobbies('Sports');
 
         // Passo 5 - Upload de arquivo
-        cy.get('#uploadPicture').selectFile('cypress/fixtures/upload.txt');
+        practiceFormPage.uploadPicture('cypress/fixtures/upload.txt');
 
-        cy.get('#currentAddress')
-            .should('be.visible')
-            .type(address);
+        practiceFormPage.fillCurrentAddress(address);
+        practiceFormPage.selectStateAndCity('NCR', 'Delhi');
 
-        cy.contains('div', 'Select State').click();
-        cy.contains('div', 'NCR').click();
-
-        cy.contains('div', 'Select City').click();
-        cy.contains('div', 'Delhi').click();
-
-        cy.get('#submit')
-            .should('be.visible')
-            .click();
-
-        cy.contains("Thanks for submitting the form").should("be.visible");
-
-        cy.get('#closeLargeModal')
-            .scrollIntoView()
-            .click({ force: true });
+        // Passo 6 - Submeter e Validar
+        practiceFormPage.submit();
+        practiceFormPage.validateSuccessMessage();
+        practiceFormPage.closeModal();
 
     });
 });
