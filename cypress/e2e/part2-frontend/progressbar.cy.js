@@ -1,49 +1,49 @@
-import progressBarPage from "../../support/pages/progress-bar.page";
-
-describe('Progress Bar - Controle de Fluxo', () => {
+describe('Progress Bar', () => {
 
     beforeEach(() => {
-        cy.on('uncaught:exception', (err, runnable) => {
-            return false;
-        });
-        progressBarPage.visit();
-    });
 
-    it('deve parar em 25%, completar até 100% e resetar', () => {
-        // 1. Iniciar Progress Bar
-        progressBarPage.startStop();
+        // Ignora erros de terceiros (ads do demoqa)
+        Cypress.on('uncaught:exception', () => false)
 
-        // 2. Parar em 25% (ou mais próximo possível)
-        // Usamos uma asserção de "deve ter um valor >= 25" e clicamos.
-        // O should() do Cypress irá re-tentar até que a condição seja verdadeira.
-        cy.get('.progress-bar').should(($bar) => {
-            const val = parseInt($bar.attr('aria-valuenow'));
-            if (val >= 25) {
-                cy.get('#startStopButton').click();
-            }
-        });
+        cy.visit('https://demoqa.com/progress-bar')
+    })
 
-        // 3. Validar se parou: O botão deve mudar o texto para "Start"
-        cy.get('#startStopButton').should('contain', 'Start');
+    it('deve parar <= 25%, completar até 100% e resetar', () => {
 
-        // 4. Validar o valor final de parada
-        cy.get('.progress-bar').invoke('attr', 'aria-valuenow').then((val) => {
-            const num = parseInt(val);
-            expect(num).to.be.at.least(25);
-            cy.log(`Barra interrompida em ${num}%`);
-        });
+        // ▶ Start
+        cy.get('#startStopButton').click()
 
-        // 5. Retomar e esperar chegar em 100%
-        progressBarPage.startStop();
+        // Delay curto só pra sair do zero
+        cy.wait(700)
 
-        // Timeout longo pois a barra é lenta
-        cy.get('.progress-bar', { timeout: 20000 })
-            .should('have.attr', 'aria-valuenow', '100');
+        // ⏸ Stop
+        cy.get('#startStopButton').click()
 
-        // 6. Validar botão Reset e clicar
-        cy.get('#resetButton').should('be.visible').click();
+        // ✅ Validar TEXTO <= 25%
+        cy.get('#progressBar')
+            .invoke('text')
+            .then(text => {
+                const value = Number(text.replace('%', '').trim())
+                expect(value).to.be.at.most(25)
+            })
 
-        // 7. Validar reset
-        cy.get('.progress-bar').should('have.attr', 'aria-valuenow', '0');
-    });
-});
+        // ▶ Start novamente
+        cy.get('#startStopButton').click()
+
+        // ⏳ Esperar chegar a 100%
+        cy.get('#progressBar', { timeout: 15000 })
+            .should('contain.text', '100%')
+
+        // 🔁 Reset
+        cy.get('#resetButton')
+            .scrollIntoView()
+            .should('be.visible')
+            .click()
+
+        // ✅ Validar reset
+        cy.get('#progressBar')
+            .should('contain.text', '0%')
+
+    })
+
+})
