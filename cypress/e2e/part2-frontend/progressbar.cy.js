@@ -5,18 +5,17 @@ describe('Progress Bar', () => {
         // Ignora erros de terceiros (ads do demoqa)
         Cypress.on('uncaught:exception', () => false)
 
-        cy.visit('https://demoqa.com/progress-bar')
+        cy.visit('/')
+        // 2. Navegar até Alerts, Frame & Windows
+        cy.contains('Widgets').click();
+
+        // 3. Clicar em Browser Windows
+        cy.contains('Progress Bar').click();
     })
 
     it('deve parar <= 25%, completar até 100% e resetar', () => {
 
         // ▶ Start
-        cy.get('#startStopButton').click()
-
-        // Delay curto só pra sair do zero
-        cy.wait(700)
-
-        // ⏸ Stop
         cy.get('#startStopButton').click()
 
         // ✅ Validar TEXTO <= 25%
@@ -26,6 +25,10 @@ describe('Progress Bar', () => {
                 const value = Number(text.replace('%', '').trim())
                 expect(value).to.be.at.most(25)
             })
+
+        // ⏸ Stop
+        cy.get('#startStopButton').click()
+
 
         // ▶ Start novamente
         cy.get('#startStopButton').click()
