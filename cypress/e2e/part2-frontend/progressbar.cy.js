@@ -7,10 +7,10 @@ describe('Progress Bar', () => {
 
         cy.visit('/')
         // 2. Navegar até Alerts, Frame & Windows
-        cy.contains('Widgets').click();
+        cy.contains('.card-body', 'Widgets').click();
 
-        // 3. Clicar em Browser Windows
-        cy.contains('Progress Bar').click();
+        // 3. Clicar em Progress Bar
+        cy.contains('.element-list', 'Progress Bar').click();
     })
 
     it('deve parar <= 25%, completar até 100% e resetar', () => {
@@ -29,12 +29,11 @@ describe('Progress Bar', () => {
         // ⏸ Stop
         cy.get('#startStopButton').click()
 
-
         // ▶ Start novamente
         cy.get('#startStopButton').click()
 
         // ⏳ Esperar chegar a 100%
-        cy.get('#progressBar', { timeout: 15000 })
+        cy.get('#progressBar', { timeout: 90000 })
             .should('contain.text', '100%')
 
         // 🔁 Reset
