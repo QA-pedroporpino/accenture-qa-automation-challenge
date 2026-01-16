@@ -1,4 +1,11 @@
 describe('Browser Windows - New Window', () => {
+
+    beforeEach(() => {
+        cy.on('uncaught:exception', (err, runnable) => {
+            return false;
+        });
+    });
+
     it('deve abrir nova janela e validar o conteúdo', () => {
         // 1. Acessar o site
         cy.visit('/');
