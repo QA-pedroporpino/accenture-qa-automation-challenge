@@ -1,8 +1,5 @@
 class SortablePage {
     visit() {
-        // Ignora erros externos (ads do DemoQA)
-        Cypress.on('uncaught:exception', () => false)
-
         cy.visit('/')
 
         // Acessar Interactions

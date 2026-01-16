@@ -3,11 +3,7 @@ import practiceFormPage from "../../support/pages/practice-form.page";
 describe("Forms - Practice Form", () => {
 
     beforeEach(() => {
-        cy.on('uncaught:exception', (err, runnable) => {
-            // Retornar false impede que o Cypress falhe o teste
-            // quando ocorrerem exceções não tratadas (comum em sites com ads)
-            return false
-        })
+        practiceFormPage.visit();
     })
 
     it("preenche e submete o formulário com sucesso", () => {

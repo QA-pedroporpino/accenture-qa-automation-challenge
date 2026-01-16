@@ -3,8 +3,6 @@ import progressBarPage from '../../support/pages/progress-bar.page'
 describe('Progress Bar', () => {
 
     beforeEach(() => {
-        // Ignora erros de terceiros (ads do demoqa)
-        Cypress.on('uncaught:exception', () => false)
         progressBarPage.navegar()
     })
 

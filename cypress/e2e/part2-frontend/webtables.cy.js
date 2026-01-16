@@ -3,9 +3,6 @@ import webTablesPage from "../../support/pages/web-tables.page";
 describe('Web Tables - CRUD e Automação Dinâmica', () => {
 
     beforeEach(() => {
-        cy.on('uncaught:exception', (err, runnable) => {
-            return false;
-        });
         webTablesPage.visit();
     });
 
