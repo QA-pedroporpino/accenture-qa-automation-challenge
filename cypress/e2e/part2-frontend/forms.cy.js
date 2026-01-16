@@ -14,8 +14,8 @@ describe("Forms - Practice Form", () => {
 
         // Dados dinâmicos para evitar repetição
         const timestamp = Date.now();
-        const firstName = `Pedro${timestamp}`;
-        const lastName = `Porpino${timestamp}`;
+        const firstName = `Pedro`;
+        const lastName = `Porpino`;
         const email = `pedro.porpino.${timestamp}@test.com`;
 
         const mobileNumber = Math.floor(
