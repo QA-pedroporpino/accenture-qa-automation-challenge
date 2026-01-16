@@ -1,7 +1,7 @@
 class ProgressBarPage {
 
     get startStopButton() { return cy.get('#startStopButton') }
-    get progressBar() { return cy.get('#progressBar') }
+    get progressBar() { return cy.get('#progressBar', { timeout: 30000 }) }
     get resetButton() { return cy.get('#resetButton') }
 
 
@@ -21,14 +21,14 @@ class ProgressBarPage {
     }
 
     esperarProgressoMinimo(valor) {
-        cy.get('#progressBar', { timeout: 20000 }).should(($el) => {
+        this.progressBar.should(($el) => {
             const value = this._getPercentValue($el)
             expect(value).to.be.at.least(valor)
         })
     }
 
     validarValorIntervalo(min, max) {
-        cy.get('#progressBar', { timeout: 10000 }).should(($el) => {
+        this.progressBar.should(($el) => {
             const value = this._getPercentValue($el)
             expect(value).to.be.at.least(min)
             expect(value).to.be.at.most(max)
@@ -36,7 +36,7 @@ class ProgressBarPage {
     }
 
     esperarConclusao() {
-        cy.get('#progressBar', { timeout: 30000 }).should(($el) => {
+        this.progressBar.should(($el) => {
             const value = this._getPercentValue($el)
             expect(value).to.eq(100)
         })
