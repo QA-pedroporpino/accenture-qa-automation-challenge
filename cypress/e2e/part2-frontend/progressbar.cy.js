@@ -6,7 +6,7 @@ describe('Progress Bar', () => {
         Cypress.on('uncaught:exception', () => false)
 
         cy.visit('/')
-        // 2. Navegar até Alerts, Frame & Windows
+        // 2. Navegar até Widgets
         cy.contains('.card-body', 'Widgets').click();
 
         // 3. Clicar em Progress Bar
@@ -18,16 +18,24 @@ describe('Progress Bar', () => {
         // ▶ Start
         cy.get('#startStopButton').click()
 
-        // ✅ Validar TEXTO <= 25%
+        // ⏳ Esperar chegar a pelo menos 15% para evitar race condition (parar no 0%)
         cy.get('#progressBar')
-            .invoke('text')
-            .then(text => {
-                const value = Number(text.replace('%', '').trim())
-                expect(value).to.be.at.most(25)
+            .should(($el) => {
+                const value = Number($el.text().replace('%', '').trim())
+                expect(value).to.be.at.least(15)
             })
 
         // ⏸ Stop
         cy.get('#startStopButton').click()
+
+        // ✅ Validar que parou entre 15% e 25%
+        cy.get('#progressBar')
+            .invoke('text')
+            .then(text => {
+                const value = Number(text.replace('%', '').trim())
+                expect(value).to.be.at.least(15)
+                expect(value).to.be.at.most(25)
+            })
 
         // ▶ Start novamente
         cy.get('#startStopButton').click()
