@@ -3,7 +3,7 @@ class PracticeFormPage {
         cy.visit("/");
         cy.contains(".card-body", "Forms").click();
         cy.url().should("include", "/forms");
-        cy.contains("li", "Practice Form").click();
+        cy.contains(".element-list li", "Practice Form").click();
         cy.contains("Student Registration Form").should("be.visible");
     }
 
@@ -72,6 +72,28 @@ class PracticeFormPage {
         cy.get('#closeLargeModal')
             .scrollIntoView()
             .click({ force: true });
+    }
+
+    /**
+     * Gera um objeto com dados aleatórios para preenchimento do formulário.
+     * Útil para manter os testes independentes e evitar repetição de lógica.
+     */
+    generateUserData() {
+        const timestamp = Date.now();
+        return {
+            firstName: 'Pedro',
+            lastName: 'Porpino',
+            email: `pedro.porpino.${timestamp}@test.com`,
+            mobileNumber: Math.floor(1000000000 + Math.random() * 9000000000).toString(),
+            address: `Rua Cypress QA, ${Math.floor(Math.random() * 100)}`,
+            gender: 'Female',
+            date: { day: '14', month: 'January', year: '1996' },
+            subject: 'Maths',
+            hobby: 'Sports',
+            state: 'NCR',
+            city: 'Delhi',
+            picturePath: 'cypress/fixtures/upload.txt'
+        };
     }
 }
 

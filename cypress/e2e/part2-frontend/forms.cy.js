@@ -2,47 +2,32 @@ import practiceFormPage from "../../support/pages/practice-form.page";
 
 describe("Forms - Practice Form", () => {
 
-    beforeEach(() => {
-        practiceFormPage.visit();
-    })
-
     it("preenche e submete o formulário com sucesso", () => {
-
-        // Dados dinâmicos para evitar repetição
-        const timestamp = Date.now();
-        const firstName = `Pedro`;
-        const lastName = `Porpino`;
-        const email = `pedro.porpino.${timestamp}@test.com`;
-
-        const mobileNumber = Math.floor(
-            1000000000 + Math.random() * 9000000000
-        ).toString();
-        const address = `Rua Cypress QA, ${Math.floor(Math.random() * 100)}`;
-
+        // Obtém dados dinâmicos centralizados no Page Object
+        const user = practiceFormPage.generateUserData();
 
         // Passo 1 a 3 - Acessar o site e navegar até o formulário
         practiceFormPage.visit();
 
-        // Passo 4 - Preencher o formulário
-        practiceFormPage.fillName(firstName, lastName);
-        practiceFormPage.fillEmail(email);
-        practiceFormPage.selectGender('Female');
-        practiceFormPage.fillMobileNumber(mobileNumber);
+        // Passo 4 - Preencher o formulário usando o objeto de dados
+        practiceFormPage.fillName(user.firstName, user.lastName);
+        practiceFormPage.fillEmail(user.email);
+        practiceFormPage.selectGender(user.gender);
+        practiceFormPage.fillMobileNumber(user.mobileNumber);
 
-        practiceFormPage.setDateOfBirth('14', 'January', '1996');
-        practiceFormPage.fillSubjects('Maths');
-        practiceFormPage.selectHobbies('Sports');
+        practiceFormPage.setDateOfBirth(user.date.day, user.date.month, user.date.year);
+        practiceFormPage.fillSubjects(user.subject);
+        practiceFormPage.selectHobbies(user.hobby);
 
         // Passo 5 - Upload de arquivo
-        practiceFormPage.uploadPicture('cypress/fixtures/upload.txt');
+        practiceFormPage.uploadPicture(user.picturePath);
 
-        practiceFormPage.fillCurrentAddress(address);
-        practiceFormPage.selectStateAndCity('NCR', 'Delhi');
+        practiceFormPage.fillCurrentAddress(user.address);
+        practiceFormPage.selectStateAndCity(user.state, user.city);
 
         // Passo 6 - Submeter e Validar
         practiceFormPage.submit();
         practiceFormPage.validateSuccessMessage();
         practiceFormPage.closeModal();
-
     });
 });
