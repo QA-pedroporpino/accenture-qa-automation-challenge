@@ -19,6 +19,6 @@
   },
   "homepage": "https://github.com/QA-pedroporpino/accenture-qa-automation-challenge#readme",
   "devDependencies": {
-    "cypress": "^15.9.0"
+    "cypress": "^13.6.0"
   }
 }
