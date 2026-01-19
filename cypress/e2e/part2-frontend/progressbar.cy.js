@@ -8,28 +8,28 @@ describe('Progress Bar', () => {
 
     it('deve parar <= 25%, completar até 100% e resetar', () => {
 
-        // ▶ Start
+        // Start
         progressBarPage.clicarStartStop()
 
-        // ⏳ Esperar chegar a pelo menos 15% para evitar race condition (parar no 0%)
+        // Esperar chegar a pelo menos 15% para evitar race condition (parar no 0%)
         progressBarPage.esperarProgressoMinimo(15)
 
-        // ⏸ Stop
+        // Stop
         progressBarPage.clicarStartStop()
 
-        // ✅ Validar que parou entre 15% e 25%
+        // Validar que parou entre 15% e 25%
         progressBarPage.validarValorIntervalo(15, 25)
 
-        // ▶ Start novamente
+        // Start novamente
         progressBarPage.clicarStartStop()
 
-        // ⏳ Esperar chegar a 100%
+        // Esperar chegar a 100%
         progressBarPage.esperarConclusao()
 
-        // 🔁 Reset
+        // Reset
         progressBarPage.resetar()
 
-        // ✅ Validar reset
+        // Validar reset
         progressBarPage.validarReset()
 
     })
