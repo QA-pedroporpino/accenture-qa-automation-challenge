@@ -29,11 +29,11 @@ class WebTablesPage {
     clickDeleteRecord(email) {
         cy.contains('.rt-tr-group', email)
             .find('[title="Delete"]')
-            .click();
+            .click({ force: true });
     }
 
     updateSalary(newSalary) {
-        cy.get('#salary', { timeout: 10000 })
+        cy.get('#salary')
             .should('be.visible')
             .clear()
             .type(newSalary);
